@@ -77,7 +77,7 @@ user.patch("/users/update/:userID", async (req, res) => {
   //destrutturo l'url per estrarre l'id
   const { userID } = req.params;
   //verifico che esista l'id
-  const userExist = await userModel.findById(userID);
+  const userExist = await userModel.findByIdAndUpdate(userID);
   // se non trova niente restituisce un falsy
   if (!userExist) {
     return res.status(404).send({

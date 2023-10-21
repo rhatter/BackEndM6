@@ -68,3 +68,4 @@ app.listen(PORT, () => console.log(`collegato alla porta ${PORT}`));
 
 //ovviamente, a seconda delle esigenze, potrai creare altri modelli e altre rotte
 //basta che poi gli fai il require qua dentro
+console.log("Preso");

@@ -10,13 +10,14 @@ const PORT = process.env.REACT_APP_SERVERPORT;
 
 //decript
 
+//Richiamo i CORS per accettare le richiesta solo dagli indirizzi che decido io
+const cors = require("cors");
+
 // Aggiungo le rotte
 const userRoute = require("./routes/userRoute");
 const postRoute = require("./routes/postRoute");
 const gitRoute = require("./routes/github");
-
-//Richiamo i CORS per accettare le richiesta solo dagli indirizzi che decido io
-const cors = require("cors");
+const verifyTokenRoute = require("./routes/verifyRoute");
 
 //Importo eventuali middlewares
 //const logger = require("../middlewares/logger");
@@ -24,16 +25,17 @@ const cors = require("cors");
 //costruisco l'app prendendolo da express
 const app = express();
 
-//gli dico che dentro deve usare i cors
-app.use(cors());
-
 //gli aggiungo il parser Json se no mi da errore quando gli invio i dati in json
 app.use(express.json());
+
+//gli dico che dentro deve usare i cors
+app.use(cors());
 
 //aggiungo al path principale le rotte che ho creato
 app.use("/", userRoute);
 app.use("/", postRoute);
 app.use("/", gitRoute);
+app.use("/", verifyTokenRoute);
 
 //creo la risposta per la root principale
 app.get("/", (req, res) => {

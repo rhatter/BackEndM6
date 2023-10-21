@@ -41,3 +41,8 @@ Content-Type: application/json
 
 ####
 GET  http://localhost:5050/posts?pageSize=1&page=3
+
+
+####
+POST http://localhost:5050/validateToken HTTP/1.1
+Content-Type: application/json

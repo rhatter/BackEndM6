@@ -21,9 +21,9 @@ const UsersSchema = new mongoose.Schema(
       required: false,
       // nel default metti cosa scriverà lui se non scrivi niente
       //ovviamente il required deve essere false
-      default: "user",
+      default: "Utente",
       // nell' enum metti un array di dati che accetta se no non li accetta
-      enum: ["user", "admin", "passante"],
+      enum: ["Utente", "Creator", "passante"],
     },
     password: {
       type: String,

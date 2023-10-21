@@ -8,6 +8,8 @@ const userModel = require("../models/userModel");
 
 //importo la lib di cript
 const bcrypt = require("bcrypt");
+//jwt
+const jwt = require("jsonwebtoken");
 
 //Importo eventuali middlewares
 //vedi i file dentro la cartella middelwares per saperne di più
@@ -59,9 +61,19 @@ user.post("/users/create", async (req, res) => {
     // usando il metodo .save che è il metodo mongoose per salvare i dati
     // si scrive proprio così
     const user = await newUser.save();
+    const token = jwt.sign(
+      {
+        id: newUser._id,
+        email: newUser.email,
+        role: newUser.role,
+        usrImg: newUser.usrImg,
+        name: newUser.name,
+      },
+      process.env.JWT_CODICESEGRETO //codice segreto preso da var ambiente
+    );
     res.status(200).send({
       statusCode: 200,
-      payload: newUser,
+      payload: token,
       message: `Utente ${newUser.name} creato correttamente`,
     });
   } catch (error) {

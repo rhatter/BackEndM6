@@ -48,11 +48,22 @@ user.post("/users/login", async (req, res) => {
     const user = await userModel.findOne({ email: email }).exec();
     const comp = bcrypt.compare(password, user.password).then((result) => {
       console.log(result);
+
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        process.env.JWT_CODICESEGRETO //codice segreto preso da var ambiente
+      );
+
       if (result) {
         res.status(200).send({
           statusCode: 200,
           comp: comp,
           payload: user,
+          token: token,
         });
       } else {
         res.status(200).send({
@@ -103,8 +114,9 @@ user.post("/users/create", async (req, res) => {
     );
     res.status(200).send({
       statusCode: 200,
-      payload: token,
+      token: token,
       message: `Utente ${newUser.name} creato correttamente`,
+      payload: newUser,
     });
   } catch (error) {
     res.status(500).send({

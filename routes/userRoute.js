@@ -40,6 +40,36 @@ user.get("/users", async (req, res) => {
 // creo la post
 // user.post è un metodo di express.Router, si scrive proprio così
 // alla peggio dai un occhio alla documentazione
+
+user.post("/users/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log(password);
+    const user = await userModel.findOne({ email: email }).exec();
+    const comp = bcrypt.compare(password, user.password).then((result) => {
+      console.log(result);
+      if (result) {
+        res.status(200).send({
+          statusCode: 200,
+          comp: comp,
+          payload: user,
+        });
+      } else {
+        res.status(200).send({
+          statusCode: 200,
+          comp: comp,
+          payload: false,
+        });
+      }
+    });
+  } catch (error) {
+    res.status(200).send({
+      statusCode: 200,
+      payload: false,
+    });
+  }
+});
+
 user.post("/users/create", async (req, res) => {
   //qua devo criptare la passw
   //complessità crypt 10 TOP

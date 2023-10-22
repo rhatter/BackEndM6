@@ -18,6 +18,7 @@ const userRoute = require("./routes/userRoute");
 const postRoute = require("./routes/postRoute");
 const gitRoute = require("./routes/github");
 const verifyTokenRoute = require("./routes/verifyRoute");
+const commentRoute = require("./routes/commentRoutes");
 
 //Importo eventuali middlewares
 //const logger = require("../middlewares/logger");
@@ -36,6 +37,7 @@ app.use("/", userRoute);
 app.use("/", postRoute);
 app.use("/", gitRoute);
 app.use("/", verifyTokenRoute);
+app.use("/", commentRoute);
 
 //creo la risposta per la root principale
 app.get("/", (req, res) => {

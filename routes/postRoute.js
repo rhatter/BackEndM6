@@ -122,6 +122,17 @@ posts.get("/posts", async (req, res) => {
   }
 });
 
+//get single post
+posts.get("post/byid/:postID", async (req, res) => {
+  const { postID } = req.params;
+  try {
+    const postByID = await PostModel.findById(postID);
+    res.status(200).send(postID);
+  } catch (error) {
+    error;
+  }
+});
+
 //faccio la get per titolo con la query
 //chiaramente devi chiamare questa route per fare il "filtro" per titolo
 //lato frontend scriverò una cosa del genere  `http://localhost:5050/posts/bytitle?title=nomedeltitolo`

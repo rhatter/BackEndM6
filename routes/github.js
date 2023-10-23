@@ -59,7 +59,7 @@ gh.get(
   (req, res) => {
     const user = req.user;
     const token = jwt.sign(user, process.env.GITHUB_CALLBACK_URL);
-    const redirectUrl = `http://localhost:3000/success?token=${encodeURIComponent(
+    const redirectUrl = `http://localhost:3000/success/:${encodeURIComponent(
       token
     )}`;
     res.redirect(redirectUrl);
@@ -67,7 +67,7 @@ gh.get(
 );
 
 gh.get("/success", (req, res) => {
-  res.redirect(`http://localhost:3000/home`);
+  res.redirect(`http://localhost:3000/`);
 });
 
 module.exports = gh;

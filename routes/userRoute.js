@@ -54,6 +54,8 @@ user.post("/users/login", async (req, res) => {
           id: user._id,
           email: user.email,
           role: user.role,
+          usrImg: user.usrImg,
+          name: user.name,
         },
         process.env.JWT_CODICESEGRETO //codice segreto preso da var ambiente
       );
@@ -85,18 +87,32 @@ user.post("/users/create", async (req, res) => {
   //qua devo criptare la passw
   //complessità crypt 10 TOP
 
+  const verificaUtente = await userModel.findOne({ email: req.body.email });
+  if (verificaUtente) {
+    return res.status(401).send({
+      statusCode: 401,
+      message: `Utente con la stessa mail già presente`,
+      userCheck: false,
+    });
+  }
   const passwordDiPartenza = req.body.password;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(passwordDiPartenza, salt);
 
   // creo l'oggetto user partendo da quello che vedo nella req
-  const newUser = new userModel({
+  let userData = {
     name: req.body.name,
     email: req.body.email,
     password: hashedPassword,
     role: req.body.role,
-    usrImg: req.body.usrImg,
-  });
+  };
+
+  if (req.body.usrImg) {
+    userData = { ...userData, usrImg: req.body.usrImg };
+  }
+  console.log(userData);
+  const newUser = new userModel(userData);
+  console.log(newUser);
   try {
     // ora mando i dati al database
     // usando il metodo .save che è il metodo mongoose per salvare i dati
@@ -122,6 +138,7 @@ user.post("/users/create", async (req, res) => {
     res.status(500).send({
       statusCode: 500,
       message: "Errore interno",
+      error: error,
     });
   }
 });
@@ -131,24 +148,39 @@ user.patch("/users/update/:userID", async (req, res) => {
   //destrutturo l'url per estrarre l'id
   const { userID } = req.params;
   //verifico che esista l'id
-  const userExist = await userModel.findByIdAndUpdate(userID);
-  // se non trova niente restituisce un falsy
-  if (!userExist) {
-    return res.status(404).send({
-      statuscode: 404,
-      message: `L'utente con id ${userID} non esiste`,
-    });
-  }
   try {
-    // tiro fuori dalla request i dati da spedire in modifica
     const dataToUpdate = req.body;
-    // gli do le options non so perchè ma mettile
+    const userExist = await userModel.findByIdAndUpdate(userID, dataToUpdate, {
+      new: true,
+    });
+    // se non trova niente restituisce un falsy
+    if (!userExist) {
+      return res.status(404).send({
+        statuscode: 404,
+        message: `L'utente con id ${userID} non esiste`,
+      });
+    }
+    const token = jwt.sign(
+      {
+        id: userExist._id,
+        email: userExist.email,
+        role: userExist.role,
+        usrImg: userExist.usrImg,
+        name: userExist.name,
+      },
+      process.env.JWT_CODICESEGRETO //codice segreto preso da var ambiente
+    );
+    return res.status(200).send({
+      statuscode: 200,
+      message: `I dati sono stati aggiornati`,
+      token: token,
+    });
   } catch (error) {
     res.status(500).send({
       statusCode: 500,
       message:
         "Non sono riuscito ad aggiornare l'utente con id ${userID} non esiste",
-      error: e,
+      error: error,
     });
   }
 });

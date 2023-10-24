@@ -35,6 +35,10 @@ const UsersSchema = new mongoose.Schema(
       default:
         "https://static.vecteezy.com/ti/vettori-gratis/p1/2318271-icona-profilo-utente-vettoriale.jpg",
     },
+    externalID: {
+      type: String,
+      required: false,
+    },
   },
   //gli metto le options roba da guardare in documentazione
   {

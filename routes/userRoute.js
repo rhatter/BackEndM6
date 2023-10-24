@@ -41,7 +41,36 @@ user.get("/users", async (req, res) => {
 // user.post è un metodo di express.Router, si scrive proprio così
 // alla peggio dai un occhio alla documentazione
 
+user.get("/user/extAccess/:externalID", async (req, res) => {
+  const { externalID } = req.params;
+
+  const user = await userModel.findOne({ externalID: externalID });
+  if (user) {
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        usrImg: user.usrImg,
+        name: user.name,
+      },
+      process.env.JWT_CODICESEGRETO //codice segreto preso da var ambiente
+    );
+    return res.status(200).send({
+      status: 200,
+      token: token,
+    });
+  } else {
+    return res.status(401).send({
+      status: 401,
+
+      message: "Utente non trovato",
+    });
+  }
+});
+
 user.post("/users/login", async (req, res) => {
+  // devo inserire il check con l'externalID
   try {
     const { email, password } = req.body;
     console.log(password);
@@ -110,6 +139,10 @@ user.post("/users/create", async (req, res) => {
   if (req.body.usrImg) {
     userData = { ...userData, usrImg: req.body.usrImg };
   }
+  if (req.body.externalID) {
+    userData = { ...userData, externalID: req.body.externalID };
+  }
+
   console.log(userData);
   const newUser = new userModel(userData);
   console.log(newUser);

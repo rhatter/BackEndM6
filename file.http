@@ -13,7 +13,7 @@ Content-Type: application/json
 {
     "title": "Magicabula",
     "category": "Libri per bambini",
-    "author": "Stephen King",
+    "author": "6537d37346e5ca6629f1d7b9",
     "rate": 4.5,
     "cover": "https://static01.nyt.com/newsgraphics/2020/04/28/stephen-king-guide/assets/images/petsematary-2000.jpg",
     "content": "Bel libro non mi lamento",
@@ -76,3 +76,7 @@ Content-Type: application/json
 
 ####
 GET  http://localhost:5050/comment/byArticle?articleID=652a9a3f2d80cb6b3d652752 HTTP/1.1
+
+
+###
+GET  http://localhost:5050/post/byAuthor/6537d37346e5ca6629f1d7b9 HTTP/1.1

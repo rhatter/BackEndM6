@@ -33,8 +33,8 @@ const PostsSchema = new mongoose.Schema(
       default: 1,
     },
     author: {
-      type: String, // mongoose.Schema.Types.ObjectId,
-      //ref: "userModel",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel",
       required: true,
     },
     content: {

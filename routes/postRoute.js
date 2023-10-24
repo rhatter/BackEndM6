@@ -292,4 +292,24 @@ posts.delete("/posts/delete/:postId", async (req, res) => {
   }
 });
 
+posts.get("/post/byAuthor/:authorID", async (req, res) => {
+  const { authorID } = req.params;
+  try {
+    const posts = await PostModel.find({ author: authorID }).populate(
+      "author",
+      "_id name usrImg"
+    );
+    res.status(200).send({
+      statusCode: 200,
+      message: `Trovati tutti i post per l'utente con id ${authorID}`,
+      payload: posts,
+    });
+  } catch (error) {
+    res.status(400).send({
+      statusCode: 400,
+      message: `Non hai ancora nessun post`,
+    });
+  }
+});
+
 module.exports = posts;

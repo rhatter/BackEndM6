@@ -63,7 +63,6 @@ user.get("/user/extAccess/:externalID", async (req, res) => {
   } else {
     return res.status(401).send({
       status: 401,
-
       message: "Utente non trovato",
     });
   }

@@ -126,7 +126,8 @@ posts.get("/posts", async (req, res) => {
 posts.get("post/byid/:postID", async (req, res) => {
   const { postID } = req.params;
   try {
-    const postByID = await PostModel.findById(postID);
+    const postByID = await PostModel.findById(postID).populate("author");
+    console.log(postByID);
     res.status(200).send(postByID);
   } catch (error) {
     res.status(400).send({
@@ -194,7 +195,10 @@ posts.get("/posts/byid/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const post = await PostModel.findById(id);
+    const post = await PostModel.findById(id).populate(
+      "author",
+      "_id name usrImg"
+    );
     if (!post) {
       return res.status(404).send({
         statusCode: 404,

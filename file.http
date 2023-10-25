@@ -78,5 +78,9 @@ Content-Type: application/json
 GET  http://localhost:5050/comment/byArticle?articleID=652a9a3f2d80cb6b3d652752 HTTP/1.1
 
 
-###
+####
 GET  http://localhost:5050/post/byAuthor/6537d37346e5ca6629f1d7b9 HTTP/1.1
+
+
+####
+GET http://localhost:5050/post/byid/653840f7984fc8bff30999c6 HTTP/1.1

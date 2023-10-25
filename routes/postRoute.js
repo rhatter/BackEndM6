@@ -127,9 +127,12 @@ posts.get("post/byid/:postID", async (req, res) => {
   const { postID } = req.params;
   try {
     const postByID = await PostModel.findById(postID);
-    res.status(200).send(postID);
+    res.status(200).send(postByID);
   } catch (error) {
-    error;
+    res.status(400).send({
+      status: 400,
+      error: error,
+    });
   }
 });
 

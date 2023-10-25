@@ -46,9 +46,9 @@ gh.get(
   "/auth/github",
   passport.authenticate("github", { scope: ["user:email"] }),
   (req, res) => {
-    const redirectUrl = `http://${GIT_VAR_TEST}/success?user=${encodeURIComponent(
-      JSON.sringify(req.user)
-    )}`;
+    const redirectUrl = `http://${
+      process.env.REACT_APP_GIT_VAR_TEST
+    }/success?user=${encodeURIComponent(JSON.sringify(req.user))}`;
     res.redirect(redirectUrl);
   }
 );
@@ -59,15 +59,15 @@ gh.get(
   (req, res) => {
     const user = req.user;
     const token = jwt.sign(user, process.env.GITHUB_CALLBACK_URL);
-    const redirectUrl = `http://${GIT_VAR_TEST}/success/:${encodeURIComponent(
-      token
-    )}`;
+    const redirectUrl = `http://${
+      process.env.REACT_APP_GIT_VAR_TEST
+    }/success/:${encodeURIComponent(token)}`;
     res.redirect(redirectUrl);
   }
 );
 
 gh.get("/success", (req, res) => {
-  res.redirect(`http://${GIT_VAR_TEST}/`);
+  res.redirect(`http://${process.env.REACT_APP_GIT_VAR_TEST}/`);
 });
 
 module.exports = gh;

@@ -24,7 +24,7 @@ const PostsSchema = new mongoose.Schema(
         type: String,
         required: false,
         default: "Minutes",
-        enum: ["Minutes", "Hour", "Seconds"],
+        enum: ["Minuti", "Ore", "Secondi"],
       },
     },
     rate: {
